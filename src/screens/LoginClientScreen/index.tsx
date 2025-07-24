@@ -1,6 +1,14 @@
 import React from "react";
-import { StatusBar, TouchableOpacity } from "react-native";
+import {
+  StatusBar,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// ✨ 1. Importe o hook para a área segura
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Container,
   Header,
@@ -28,71 +36,85 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 
 const LoginClienteScreen = () => {
   const navigation = useNavigation();
+  // ✨ 2. Obtenha as medidas da área segura do dispositivo
+  const insets = useSafeAreaInsets();
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" />
-      <BackButton onPress={() => navigation.goBack()}>
+      <StatusBar barStyle="light-content" backgroundColor="#df692b" />
+      
+      {/* ✨ 3. Passe a medida do topo como uma prop para o estilo */}
+      <BackButton topInset={insets.top} onPress={() => navigation.goBack()}>
         <Feather name="arrow-left" size={24} color="#FFF8EC" />
       </BackButton>
 
-      <Header>
-        <HeaderContent>
-          <Logo source={require("../../assets/images/logo.png")} />
-          <HeaderTitle>
-            Sua necessidade a um clique de ser resolvida.
-          </HeaderTitle>
-        </HeaderContent>
-      </Header>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Header>
+            <HeaderContent>
+              <Logo source={require("../../assets/images/logo.png")} />
+              <HeaderTitle>
+                Sua necessidade a um clique de ser resolvida.
+              </HeaderTitle>
+            </HeaderContent>
+          </Header>
 
-      <FormContainer>
-        <Subtitle>Login para clientes:</Subtitle>
+          <FormContainer>
+            <Subtitle>Login para clientes:</Subtitle>
 
-        <InputContainer>
-          <Feather name="user" size={20} color="white" />
-          <StyledInput placeholder="E-mail" keyboardType="email-address" />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="user" size={20} color="white" />
+              <StyledInput placeholder="E-mail" keyboardType="email-address" />
+            </InputContainer>
 
-        <InputContainer>
-          <Feather name="lock" size={20} color="white" />
-          <StyledInput placeholder="Password" secureTextEntry />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="lock" size={20} color="white" />
+              <StyledInput placeholder="Senha" secureTextEntry />
+            </InputContainer>
 
-        <TouchableOpacity>
-          <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
-        </TouchableOpacity>
+            <TouchableOpacity>
+              <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
+            </TouchableOpacity>
 
-        <LoginButton>
-          <ButtonText>Login</ButtonText>
-        </LoginButton>
+            <LoginButton>
+              <ButtonText>Login</ButtonText>
+            </LoginButton>
 
-        <DividerContainer>
-          <DividerLine />
-          <DividerText>Login com:</DividerText>
-          <DividerLine />
-        </DividerContainer>
+            <DividerContainer>
+              <DividerLine />
+              <DividerText>Login com:</DividerText>
+              <DividerLine />
+            </DividerContainer>
 
-        <SocialLoginContainer>
-          <TouchableOpacity>
-            <AntDesign name="google" size={30} color="#000000" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntDesign name="apple1" size={30} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntDesign name="facebook-square" size={30} color="#000000" />
-          </TouchableOpacity>
-        </SocialLoginContainer>
+            <SocialLoginContainer>
+              <TouchableOpacity>
+                <AntDesign name="google" size={30} color="#000000" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AntDesign name="apple1" size={30} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AntDesign name="facebook-square" size={30} color="#000000" />
+              </TouchableOpacity>
+            </SocialLoginContainer>
 
-        <SignUpContainer>
-          <SignUpText>Não tem uma conta?</SignUpText>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("RegisterClient" as never)}
-          >
-            <SignUpLink>Cadastre-se</SignUpLink>
-          </TouchableOpacity>
-        </SignUpContainer>
-      </FormContainer>
+            <SignUpContainer>
+              <SignUpText>Não tem uma conta?</SignUpText>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegisterClient" as never)}
+              >
+                <SignUpLink>Cadastre-se</SignUpLink>
+              </TouchableOpacity>
+            </SignUpContainer>
+          </FormContainer>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 };

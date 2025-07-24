@@ -1,34 +1,44 @@
 import styled from "styled-components/native";
 
+// ✨ 1. Interface para tipar as props do BackButton
+interface BackButtonProps {
+  topInset: number;
+}
+
 export const Container = styled.View`
   flex: 1;
   background-color: #df692b;
 `;
 
-export const BackButton = styled.TouchableOpacity`
-  position: absolute; 
-  top: 40px; 
-  left: 25px; 
-  z-index: 1; 
-  padding: 5px; 
+// ✨ 2. Componente BackButton totalmente atualizado
+export const BackButton = styled.TouchableOpacity<BackButtonProps>`
+  position: absolute;
+  top: ${(props) =>
+    props.topInset + 10}px; /* Usa a prop para o posicionamento */
+  left: 15px;
+  z-index: 10;
+
+  background-color: rgba(0, 0, 0, 0.15);
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Header = styled.View`
-  flex: 0.7;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 80px 30px 40px 30px;
 `;
 
 export const FormContainer = styled.View`
   flex: 1;
   background-color: #fff8ec;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  padding: 30px 25px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 40px 25px 25px;
 `;
-
-//Heander
 
 export const HeaderContent = styled.View`
   flex-direction: row;
@@ -45,10 +55,8 @@ export const HeaderTitle = styled.Text`
   font-size: 20px;
   color: #fff8ec;
   font-weight: bold;
-  flex-shrink: 1; 
+  flex-shrink: 1;
 `;
-
-// formulario
 
 export const Subtitle = styled.Text`
   font-size: 16px;
@@ -65,6 +73,7 @@ export const InputContainer = styled.View`
   border-radius: 12px;
   padding: 0 15px;
   margin-bottom: 15px;
+  elevation: 3;
 `;
 
 export const StyledInput = styled.TextInput.attrs({
@@ -89,6 +98,7 @@ export const LoginButton = styled.TouchableOpacity`
   border-radius: 12px;
   align-items: center;
   margin-bottom: 25px;
+  elevation: 5;
 `;
 
 export const ButtonText = styled.Text`
@@ -96,8 +106,6 @@ export const ButtonText = styled.Text`
   font-size: 18px;
   font-weight: bold;
 `;
-
-// --- Divisor e Login Social ---
 
 export const DividerContainer = styled.View`
   flex-direction: row;
@@ -119,24 +127,25 @@ export const DividerText = styled.Text`
 export const SocialLoginContainer = styled.View`
   flex-direction: row;
   justify-content: center;
-  gap: 25px; 
+  gap: 25px;
 `;
 
 export const SignUpContainer = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 30px; 
+  margin-top: auto;
+  padding-bottom: 10px;
 `;
 
 export const SignUpText = styled.Text`
   font-size: 15px;
-  color: #666; 
+  color: #666;
 `;
 
 export const SignUpLink = styled.Text`
   font-size: 15px;
-  color: #f48f33; 
+  color: #df692b;
   font-weight: bold;
-  margin-left: 5px; 
+  margin-left: 5px;
 `;

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { StatusBar, TouchableOpacity, Alert } from "react-native";
+import {
+  StatusBar,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  KeyboardAvoidingView, 
+  Platform, 
+} from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
@@ -21,7 +29,21 @@ import {
   LoginLink,
 } from "./style";
 
-// Validação de CPF
+// ... (seus tipos e funções de validação permanecem os mesmos) ...
+type RootStackParamList = {
+  RegisterClientStep2: {
+    name: string;
+    cpf: string;
+    email: string;
+    password: string;
+  };
+};
+
+type RegisterClientScreenProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "RegisterClientStep2"
+>;
+
 const isValidCPF = (cpf: string) => {
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -47,14 +69,13 @@ const isValidCPF = (cpf: string) => {
   return true;
 };
 
-// Validação de e-mail
 const isValidEmail = (email: string) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email.toLowerCase());
 };
 
 const RegisterClient = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<RegisterClientScreenProp>();
 
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
@@ -63,121 +84,136 @@ const RegisterClient = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = () => {
-    // Verifica se todos os campos estão preenchidos
     if (!name || !cpf || !email || !password || !confirmPassword) {
       Alert.alert("Campos obrigatórios", "Preencha todos os campos.");
       return;
     }
 
-    // CPF
     if (!isValidCPF(cpf)) {
       Alert.alert("CPF inválido", "Por favor, insira um CPF válido.");
       return;
     }
 
-    // E-mail
     if (!isValidEmail(email)) {
       Alert.alert("E-mail inválido", "Por favor, insira um e-mail válido.");
       return;
     }
 
-    // Senha
     if (password.length < 6) {
       Alert.alert("Senha inválida", "A senha deve ter no mínimo 6 caracteres.");
       return;
     }
 
-    // Confirmação de senha
     if (password !== confirmPassword) {
       Alert.alert("Senhas diferentes", "As senhas não coincidem.");
       return;
     }
 
-    console.log("Cadastro válido:", { name, cpf, email, password });
-
-    Alert.alert("Sucesso!", "Cadastro realizado com sucesso.");
+    navigation.navigate("RegisterClientStep2", {
+      name,
+      cpf,
+      email,
+      password,
+    });
   };
 
   return (
     <Container>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor="#df692b" />
       <BackButton onPress={() => navigation.goBack()}>
         <Feather name="arrow-left" size={24} color="#FFF8EC" />
       </BackButton>
 
-      <Header>
-        <HeaderContent>
-          <Logo source={require("../../assets/images/logo.png")} />
-          <HeaderTitle>
-            Cadastre-se para encontrar o profissional certo para você.
-          </HeaderTitle>
-        </HeaderContent>
-      </Header>
+      {/* ✨ KeyboardAvoidingView para a tela se ajustar ao teclado */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        {/* ✨ Propriedades adicionadas ao ScrollView para melhor layout */}
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Header>
+            <HeaderContent>
+              <Logo source={require("../../assets/images/logo.png")} />
+              <HeaderTitle>
+                Cadastre-se para encontrar o profissional certo para você.
+              </HeaderTitle>
+            </HeaderContent>
+          </Header>
 
-      <FormContainer>
-        <Subtitle>Cadastro de cliente:</Subtitle>
+          <FormContainer>
+            <Subtitle>Cadastro de cliente:</Subtitle>
 
-        <InputContainer>
-          <Feather name="user" size={20} color="white" />
-          <StyledInput
-            placeholder="Nome completo"
-            value={name}
-            onChangeText={setName}
-          />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="user" size={20} color="white" />
+              <StyledInput
+                placeholder="Nome completo"
+                value={name}
+                onChangeText={setName}
+                returnKeyType="next"
+              />
+            </InputContainer>
 
-        <InputContainer>
-          <Feather name="shield" size={20} color="white" />
-          <StyledInput
-            placeholder="CPF"
-            keyboardType="number-pad"
-            maxLength={11}
-            value={cpf}
-            onChangeText={(text) => setCpf(text.replace(/[^0-9]/g, ""))}
-          />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="shield" size={20} color="white" />
+              <StyledInput
+                placeholder="CPF"
+                keyboardType="number-pad"
+                maxLength={11}
+                value={cpf}
+                onChangeText={(text) => setCpf(text.replace(/[^0-9]/g, ""))}
+              />
+            </InputContainer>
 
-        <InputContainer>
-          <Feather name="mail" size={20} color="white" />
-          <StyledInput
-            placeholder="E-mail"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="mail" size={20} color="white" />
+              <StyledInput
+                placeholder="E-mail"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+                returnKeyType="next"
+              />
+            </InputContainer>
 
-        <InputContainer>
-          <Feather name="lock" size={20} color="white" />
-          <StyledInput
-            placeholder="Senha"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-          />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="lock" size={20} color="white" />
+              <StyledInput
+                placeholder="Senha"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+                returnKeyType="next"
+              />
+            </InputContainer>
 
-        <InputContainer>
-          <Feather name="lock" size={20} color="white" />
-          <StyledInput
-            placeholder="Confirme a senha"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-          />
-        </InputContainer>
+            <InputContainer>
+              <Feather name="lock" size={20} color="white" />
+              <StyledInput
+                placeholder="Confirme a senha"
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                returnKeyType="done"
+              />
+            </InputContainer>
 
-        <RegisterButton onPress={handleRegister}>
-          <ButtonText>Cadastrar</ButtonText>
-        </RegisterButton>
+            <RegisterButton onPress={handleRegister}>
+              <ButtonText>Próximo</ButtonText>
+            </RegisterButton>
 
-        <LoginContainer>
-          <LoginText>Já tem uma conta?</LoginText>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <LoginLink>Entrar</LoginLink>
-          </TouchableOpacity>
-        </LoginContainer>
-      </FormContainer>
+            <LoginContainer>
+              <LoginText>Já tem uma conta?</LoginText>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <LoginLink>Entrar</LoginLink>
+              </TouchableOpacity>
+            </LoginContainer>
+          </FormContainer>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 };

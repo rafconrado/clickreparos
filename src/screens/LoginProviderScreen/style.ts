@@ -1,33 +1,45 @@
 import styled from "styled-components/native";
 
+// Interface para tipar as props do BackButton
+interface BackButtonProps {
+  topInset: number;
+}
+
 export const Container = styled.View`
   flex: 1;
   background-color: #fff8ec;
 `;
 
-export const FormContainer = styled.View`
-  flex: 1.3;
+export const BackButton = styled.TouchableOpacity<BackButtonProps>`
+  position: absolute;
+  top: ${(props) => props.topInset + 10}px;
+  left: 15px;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.08);
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
   justify-content: center;
-  padding: 40px 25px 20px 25px;
+  align-items: center;
 `;
 
-export const BackButton = styled.TouchableOpacity`
-  position: absolute;
-  top: 40px;
-  left: 25px;
-  z-index: 1;
-  padding: 5px;
+export const FormContainer = styled.View`
+  /* ✨ A SOLUÇÃO ESTÁ AQUI 👇 */
+  flex: 1; /* Faz o container do formulário ocupar o espaço livre */
+  justify-content: center;
+  padding: 80px 25px 40px 25px;
 `;
 
 export const BlueFooter = styled.View`
-  flex: 0.7;
   background-color: #57b2c5;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 40px 20px;
 `;
+
+// O resto do seu arquivo de estilo permanece o mesmo...
 
 export const Subtitle = styled.Text`
   font-size: 16px;
@@ -121,7 +133,7 @@ export const SignUpContainer = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 30px; 
+  margin-top: 30px;
 `;
 
 export const SignUpText = styled.Text`
@@ -131,7 +143,7 @@ export const SignUpText = styled.Text`
 
 export const SignUpLink = styled.Text`
   font-size: 15px;
-  color: #57b2c5; 
+  color: #57b2c5;
   font-weight: bold;
   margin-left: 5px;
 `;

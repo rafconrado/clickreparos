@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { Picker } from "@react-native-picker/picker";
 
 export const Container = styled.View`
   flex: 1;
@@ -7,10 +8,10 @@ export const Container = styled.View`
 
 export const BackButton = styled.TouchableOpacity`
   position: absolute;
-  top: 40px;
-  left: 25px;
+  top: 35px;
+  left: 20px;
   z-index: 1;
-  padding: 5px;
+  padding: 10px;
 `;
 
 export const Header = styled.View`
@@ -61,13 +62,6 @@ export const InputContainer = styled.View`
   border-radius: 12px;
   padding: 0 15px;
   margin-bottom: 15px;
-  shadow-color: #000;
-  shadow-offset: {
-    width: 0;
-    height: 2px;
-  }
-  shadow-opacity: 0.1;
-  shadow-radius: 3.84px;
   elevation: 3;
 `;
 
@@ -87,13 +81,6 @@ export const RegisterButton = styled.TouchableOpacity`
   align-items: center;
   margin-top: 10px;
   margin-bottom: 25px;
-  shadow-color: #000;
-  shadow-offset: {
-    width: 0;
-    height: 2px;
-  }
-  shadow-opacity: 0.2;
-  shadow-radius: 3.84px;
   elevation: 5;
 `;
 
@@ -103,22 +90,19 @@ export const ButtonText = styled.Text`
   font-weight: bold;
 `;
 
-export const LoginContainer = styled.View`
+// NOVOS ESTILOS PARA O PICKER
+export const PickerContainer = styled.View`
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  margin-top: auto;
-  padding-bottom: 10px;
+  background-color: #df692b;
+  border-radius: 12px;
+  padding: 0 15px;
+  margin-bottom: 15px;
+  elevation: 3;
 `;
 
-export const LoginText = styled.Text`
-  font-size: 15px;
-  color: #666;
-`;
-
-export const LoginLink = styled.Text`
-  font-size: 15px;
-  color: #df692b;
-  font-weight: bold;
-  margin-left: 5px;
+export const StyledPicker = styled(Picker)`
+  flex: 1;
+  color: #fff8ec;
+  height: 58px;
 `;

@@ -8,7 +8,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate("Selection" as never);
-    }, 1200);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [navigation]);
